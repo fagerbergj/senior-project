@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 class App extends Component {
   render() {
     return (
-      <div>
-        
+      <div className={'container'}>
+        <div className={'jumbotron'}><h1>Test</h1></div>
       </div>
     );
   }
