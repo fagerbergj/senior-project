@@ -5,11 +5,11 @@ import 'bootstrap/dist/css/bootstrap.css'
 class App extends React.Component {
   render () {
     return (
-      <body className={'main-color'}>
+      <div className={'main-color'}>
         <div className={'container'}>
           <Welcome/>
         </div>
-      </body>
+      </div>
     )
   }
 }
