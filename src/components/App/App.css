@@ -1,15 +1,21 @@
-  .body {
-    background-color: rgb(255, 0, 0)
+  .main-color {
+    background-color: #ff5a5f !important;
   }
+
+  .light-pink {
+    background-color: #f5a59f !important;
+  }
+
   .vertical-center {
-    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-    min-height: 100vh; /* These two lines are counted as one :-)       */
+    min-height: 100%; 
+    min-height: 100vh; 
   
     display: flex;
     align-items: center;
   }
 
   .jumbotron {
+    color: white;
     background-size: cover;
     padding-top: 20%;
     padding-bottom: 20%;

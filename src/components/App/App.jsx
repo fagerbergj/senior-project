@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 class App extends React.Component {
   render () {
     return (
-      <body>
+      <body className={'main-color'}>
         <div className={'container'}>
           <Welcome/>
         </div>
