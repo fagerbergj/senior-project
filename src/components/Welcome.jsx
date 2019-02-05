@@ -51,7 +51,9 @@ export default class Welcome extends React.Component {
         <div className={'jumbotron col-sm-12 pagination-centered light-pink text-center'}>
           <h1>Welcome to AutoNote!</h1>
           <h4>Upload a video to generate a linked transcription.</h4>
-          <input id="file" ref="fileUploader" type="file" style={{ display: 'none' }} onChange={ (e) => this.handleChange(e.target.files) } />
+          <input id="file" ref="fileUploader" type="file" accept='video/*'
+            style={{ display: 'none' }}
+            onChange={ (e) => this.handleChange(e.target.files) } />
           <button
             className={btnClass}
             onClick={this.handleClick}
