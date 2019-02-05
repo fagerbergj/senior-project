@@ -8,21 +8,27 @@ export default class Welcome extends React.Component {
     super(props)
     this.state = {
       state: 'PENDING',
-      fileName: ''
+      selectedFile: null
     }
     this.handleClick = this.handleClick.bind(this)
   }
 
   handleClick () {
-    this.refs.fileUploader.click()
+    if (this.state.state === 'PENDING') {
+      this.refs.fileUploader.click()
+    } else {
+      this.setState({ state: 'PENDING' })
+    }
   }
 
   handleChange (selectorFiles) {
+    if (selectorFiles.length === 0) return
     console.log(selectorFiles)
     this.setState({
       state: 'PROCESSING',
-      fileName: selectorFiles[0].name
+      selectedFile: selectorFiles[0]
     })
+    selectorFiles = null
   }
 
   render () {
@@ -33,27 +39,38 @@ export default class Welcome extends React.Component {
       'active': !this.state.state === 'PROCESSING'
     })
 
+    var jumboClass = classNames({
+      'jumbotron col-sm-12 pagination-centered light-pink text-center': true,
+      'jumboProcessing': this.state.state === 'PROCESSING'
+    })
+
+    var input
     var loading
     if (this.state.state === 'PROCESSING') {
+      input = null
       loading = (
         <div>
           <div className="spinner-border" role="status">
             <span className="sr-only">Loading...</span>
           </div>
-          <p>processing {this.state.fileName} ...</p>
+          <p>processing {this.state.selectedFile.name} ...</p>
+          <button className={'btn btn-outline-light'} onClick={this.handleClick}>Cancel</button>
         </div>
       )
     } else {
+      input = (
+        <input id="file" ref="fileUploader" type="file" accept='video/*'
+          style={{ display: 'none' }}
+          onChange={ (e) => this.handleChange(e.target.files) } />
+      )
       loading = null
     }
     return (
       <div className={'row vertical-center'}>
-        <div className={'jumbotron col-sm-12 pagination-centered light-pink text-center'}>
+        <div className={jumboClass}>
           <h1>Welcome to AutoNote!</h1>
           <h4>Upload a video to generate a linked transcription.</h4>
-          <input id="file" ref="fileUploader" type="file" accept='video/*'
-            style={{ display: 'none' }}
-            onChange={ (e) => this.handleChange(e.target.files) } />
+          {input}
           <button
             className={btnClass}
             onClick={this.handleClick}
