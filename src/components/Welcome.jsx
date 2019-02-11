@@ -2,6 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import './App/App.css'
 import classNames from 'classnames'
+import PropTypes from 'prop-types'
 
 export default class Welcome extends React.Component {
   constructor (props) {
@@ -28,7 +29,7 @@ export default class Welcome extends React.Component {
       state: 'PROCESSING',
       selectedFile: selectorFiles[0]
     })
-    selectorFiles = null
+    this.props.post(selectorFiles[0])
   }
 
   render () {
@@ -40,7 +41,7 @@ export default class Welcome extends React.Component {
     })
 
     var jumboClass = classNames({
-      'jumbotron col-sm-12 pagination-centered light-pink text-center': true,
+      'jumbotron col-8 offset-2 light-pink text-center': true,
       'jumboProcessing': this.state.state === 'PROCESSING'
     })
 
@@ -68,8 +69,8 @@ export default class Welcome extends React.Component {
     return (
       <div className={'row vertical-center'}>
         <div className={jumboClass}>
-          <h1>Welcome to AutoNote!</h1>
-          <h4>Upload a video to generate a linked transcription.</h4>
+          <h1 className={'font-size:10vw'}>Welcome to AutoNote!</h1>
+          <h4 className={'font-size:5vw'}>Upload a video to generate a linked transcription.</h4>
           {input}
           <button
             className={btnClass}
@@ -81,4 +82,8 @@ export default class Welcome extends React.Component {
         </div>
       </div>)
   }
+}
+
+Welcome.propsType = {
+  post: PropTypes.function
 }

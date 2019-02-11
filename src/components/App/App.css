@@ -21,12 +21,13 @@
   .jumbotron {
     color: white;
     background-size: cover;
-    padding-top: 20%;
-    padding-bottom: 20%;
+    padding-top: 12%;
+    padding-bottom: 12%;
   }
 
   .jumboProcessing {
-    padding-bottom: 5%;
+    padding-top: 6%;
+    padding-bottom: 6%;
   }
 
   .spinner-border {
