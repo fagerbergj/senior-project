@@ -72,7 +72,7 @@ export default class Welcome extends React.Component {
       <div className={'row vertical-center'}>
         <div className={jumboClass}>
           <h1 className={'font-size:10vw'}>Welcome to AutoNote!</h1>
-          <h4 className={'font-size:5vw'}>Upload a video to generate a linked transcription.</h4>
+          <h6 className={'font-size:5vw'}>Upload a video to generate a linked transcription.</h6>
           {input}
           <button
             className={btnClass}
