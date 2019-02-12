@@ -35,13 +35,6 @@ export default class Welcome extends React.Component {
   }
 
   render () {
-    var btnClass = classNames({
-      btn: true,
-      'btn-light btn-lg': true,
-      'disabled': this.state.state === 'PROCESSING',
-      'active': !this.state.state === 'PROCESSING'
-    })
-
     var jumboClass = classNames({
       'jumbotron col-8 offset-2 light-pink text-center': true,
       'jumboProcessing': this.state.state === 'PROCESSING'
@@ -62,23 +55,25 @@ export default class Welcome extends React.Component {
       )
     } else {
       input = (
-        <input id="file" ref="fileUploader" type="file" accept='video/*'
-          style={{ display: 'none' }}
-          onChange={ (e) => this.handleChange(e.target.files) } />
+        <React.Fragment>
+          <br></br>
+          <button
+            className={'btn-light btn-lg'}
+            onClick={this.handleClick}
+          >Upload Video</button>
+          <input id="file" ref="fileUploader" type="file" accept='video/*'
+            style={{ display: 'none' }}
+            onChange={ (e) => this.handleChange(e.target.files) } />
+        </React.Fragment>
       )
       loading = null
     }
     return (
       <div className={'row vertical-center'}>
         <div className={jumboClass}>
-          <h1 className={'font-size:10vw'}>Welcome to AutoNote!</h1>
-          <h6 className={'font-size:5vw'}>Upload a video to generate a linked transcription.</h6>
+          <h2 className={'h2 font-size:10vw'}>Welcome to AutoNote!</h2>
+          <h6 className={'h6 font-size:5vw'}>Upload a video to generate a linked transcription.</h6>
           {input}
-          <button
-            className={btnClass}
-            onClick={this.handleClick}
-            disabled={this.state.state === 'PROCESSING'}
-          >Upload Video</button>
           <br></br>
           {loading}
         </div>
