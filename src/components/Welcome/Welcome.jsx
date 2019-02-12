@@ -1,6 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import './App/App.css'
+import '../App/App.css'
+import { cancelPost } from '../../utils/ApiClient'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
@@ -18,6 +19,7 @@ export default class Welcome extends React.Component {
     if (this.state.state === 'PENDING') {
       this.refs.fileUploader.click()
     } else {
+      cancelPost()
       this.setState({ state: 'PENDING' })
     }
   }

@@ -1,5 +1,5 @@
 import React from 'react'
-import Welcome from '../Welcome'
+import Welcome from '../Welcome/Welcome'
 import processPost from '../../utils/ApiClient'
 import 'bootstrap/dist/css/bootstrap.css'
 
