@@ -3,8 +3,6 @@ from werkzeug import secure_filename
 from flask_cors import CORS
 from crossdomain import crossdomain
 
-import connexion
-
 # Create the application instance
 app = Flask(__name__)
 CORS(app)

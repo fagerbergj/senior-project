@@ -1,15 +1,16 @@
 import axios from 'axios'
 
 // this method will process the post request to the back end and handel the response
-export default function processPost (headers, body, callback) {
+export default function processPost (body, callback) {
   // config for post
   var config = {
     timeout: 5000,
-    headers: headers
+    headers: { 'content-type': 'multipart/form-data' }
+
   }
 
   // url for server endpoint
-  var url = 'localhost'
+  var url = 'http://localhost:5000/uploader'
 
   // actual post
   axios
