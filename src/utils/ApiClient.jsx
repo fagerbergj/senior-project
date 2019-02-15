@@ -4,7 +4,7 @@ import axios from 'axios'
 export default function processPost (body, callback) {
   // config for post
   var config = {
-    timeout: 5000,
+    timeout: 300000,
     headers: { 'content-type': 'multipart/form-data' }
 
   }
@@ -24,11 +24,12 @@ export default function processPost (body, callback) {
         // something else happened
       } else {
       }
+      throw error
     })
 }
 
 export function cancelPost () {
-  var url = 'localhost'
+  var url = 'http://localhost:5000/uploader'
   var CancelToken = axios.CancelToken
   var cancel
   axios.post(url,
