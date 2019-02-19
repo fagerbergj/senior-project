@@ -12,17 +12,7 @@ CORS(app)
 # Read the swagger.yml file to configure the endpoints
 #app.add_api('swagger.yml')
 
-# Create a URL route in our application for "/"
-@app.route('/upload')
-def upload():
-    """
-    This function just responds to the browser ULR
-    localhost:5000/
-    :return:        the rendered template 'home.html'
-    """
-    return render_template('upload.html')
-
-@app.route('/uploader', methods = ['GET', 'POST'])
+@app.route('/uploader', methods = ['POST'])
 @crossdomain(origin='*')
 def upload_file():
     if request.method == 'POST':
