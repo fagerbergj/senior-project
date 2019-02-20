@@ -10,7 +10,7 @@ export default class Video extends React.Component {
   }
 
   render () {
-    return (<div> </div>)
+    return <ReactPlayer url={this.props.videoPath} playing />
   }
 }
 
