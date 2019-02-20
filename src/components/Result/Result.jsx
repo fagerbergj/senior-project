@@ -2,7 +2,6 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../App/App.css'
 import PropTypes from 'prop-types'
-import Video from './Video'
 
 export default class Result extends React.Component {
   constructor (props) {
@@ -12,6 +11,7 @@ export default class Result extends React.Component {
   }
 
   handleClick () {
+    this.refs.videoPlayer.currentTime = 3
   }
 
   render () {
@@ -22,12 +22,12 @@ export default class Result extends React.Component {
           onClick={this.props.goBack}
         >Go Back To Upload</button>
         <div className={'row'}>
-          <video controls width="100%" height="50%">
+          <video ref="videoPlayer" controls width="100%" height="50%">
             <source src={this.props.videoPath.filePath}/>
           </video>
         </div>
         <div className={'row half'}>
-          <div className={'div transcription'}>
+          <div className={'div transcription'} onClick={this.handleClick}>
             <p>transcription</p>
           </div>
         </div>
