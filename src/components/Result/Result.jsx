@@ -22,8 +22,9 @@ export default class Result extends React.Component {
           onClick={this.props.goBack}
         >Go Back To Upload</button>
         <div className={'row'}>
-
-          <Video videoPath={this.props.videoPath}/>
+          <video controls width="100%" height="50%">
+            <source src={this.props.videoPath.filePath}/>
+          </video>
         </div>
         <div className={'row half'}>
           <div className={'div transcription'}>
