@@ -47,8 +47,7 @@ export default class Welcome extends React.Component {
     processPost(data,
       resp => {
         console.log(resp.data)
-
-        this.props.successfulPost(file, URL.createObjectURL(file).filePath, resp.data.boardTranscription, resp.data.audioTranscription)
+        this.props.successfulPost(file, URL.createObjectURL(file), resp.data.boardTranscription, resp.data.audioTranscription)
       },
       error => {
         // if there is an error, log it and reset state

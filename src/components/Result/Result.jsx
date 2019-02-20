@@ -16,12 +16,20 @@ export default class Result extends React.Component {
 
   render () {
     return (
-      <div className={'row vertical-center'}>
+      <div>
         <button
-          className={'btn-light btn-lg'}
+          className={'btn-light btn-sm'}
           onClick={this.props.goBack}
         >Go Back To Upload</button>
-        <Video videoPath={this.props.videoPath}/>
+        <div className={'row'}>
+
+          <Video videoPath={this.props.videoPath}/>
+        </div>
+        <div className={'row half'}>
+          <div className={'div transcription'}>
+            <p>transcription</p>
+          </div>
+        </div>
       </div>
     )
   }

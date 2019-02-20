@@ -10,11 +10,14 @@ export default class Video extends React.Component {
   }
 
   render () {
-    return <ReactPlayer url={this.props.videoPath} playing />
+    return (
+      <video controls width="100%" height="50%">
+        <source src={this.props.videoPath.filePath}/>
+      </video>
+    )
   }
 }
 
 Video.protoType = {
   videoPath: PropTypes.string
 }
-
