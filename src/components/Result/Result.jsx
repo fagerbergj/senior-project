@@ -11,15 +11,26 @@ export default class Result extends React.Component {
   }
 
   handleClick () {
+    this.refs.videoPlayer.currentTime = 3
   }
 
   render () {
     return (
-      <div className={'row vertical-center'}>
+      <div>
         <button
-          className={'btn-light btn-lg'}
+          className={'btn-light btn-sm'}
           onClick={this.props.goBack}
         >Go Back To Upload</button>
+        <div className={'row'}>
+          <video ref="videoPlayer" controls width="100%" height="50%">
+            <source src={this.props.videoPath.filePath}/>
+          </video>
+        </div>
+        <div className={'row half'}>
+          <div className={'div transcription'} onClick={this.handleClick}>
+            <p>transcription</p>
+          </div>
+        </div>
       </div>
     )
   }
@@ -27,6 +38,7 @@ export default class Result extends React.Component {
 
 Result.propsType = {
   video: PropTypes.object,
+  videoPath: PropTypes.string,
   transcription: PropTypes.array,
   goBack: PropTypes.func
 }

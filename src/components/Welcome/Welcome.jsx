@@ -1,9 +1,10 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../App/App.css'
-import { cancelPost } from '../../utils/ApiClient'
+import { processPost, cancelPost } from '../../utils/ApiClient'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
+import FormData from 'form-data'
 
 export default class Welcome extends React.Component {
   constructor (props) {
@@ -13,6 +14,7 @@ export default class Welcome extends React.Component {
       selectedFile: null
     }
     this.handleClick = this.handleClick.bind(this)
+    this.post = this.post.bind(this)
   }
 
   handleClick () {
@@ -27,11 +29,31 @@ export default class Welcome extends React.Component {
   handleChange (selectorFiles) {
     if (selectorFiles.length === 0) return
     console.log(selectorFiles)
+    this.post(selectorFiles[0])
+  }
+
+  post (file) {
+    // set screen to loading
     this.setState({
       state: 'PROCESSING',
-      selectedFile: selectorFiles[0]
+      selectedFile: file
     })
-    this.props.post(selectorFiles[0])
+
+    // set up body
+    const data = new FormData()
+    data.append('file', file)
+
+    // pass in header, body, then callback
+    processPost(data,
+      resp => {
+        console.log(resp.data)
+        this.props.successfulPost(file, URL.createObjectURL(file), resp.data.boardTranscription, resp.data.audioTranscription)
+      },
+      error => {
+        // if there is an error, log it and reset state
+        console.log(error)
+        this.setState({ state: 'PENDING' })
+      })
   }
 
   render () {
@@ -82,5 +104,5 @@ export default class Welcome extends React.Component {
 }
 
 Welcome.propsType = {
-  post: PropTypes.function
+  successfulPost: PropTypes.function
 }

@@ -33,3 +33,17 @@
   .h2 {
     margin-bottom: 4%;
   }
+
+  .row.half {
+    padding-top: 4%;
+    padding-bottom: 4%;
+    min-height: 50px;
+  }
+
+  .div.transcription {
+    padding: 4%;
+    border:  1px solid #333; 
+    overflow-y:  scroll; 
+    background: white;
+    width: 100%;
+  }
