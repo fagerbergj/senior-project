@@ -45,5 +45,25 @@
     border:  1px solid #333; 
     overflow-y:  scroll; 
     background: white;
-    width: 100%;
+    display: inline;
+  }
+
+  .line:hover{
+    background: lightblue;
+    display: inline;
+    }
+
+  .selected {
+    background: yellow;
+  }
+
+  .float-middle {
+    float: none; margin: 0 auto;
+    padding: 4%
+  }
+
+  .bottom {
+    padding-bottom: 4%;
+    float: none; margin: 0 auto;
+    width: 85%;
   }
