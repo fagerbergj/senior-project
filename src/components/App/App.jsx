@@ -20,10 +20,10 @@ class App extends React.Component {
   successfulPost (file, filePath, boardTranscription, audioTranscription) {
     this.setState({
       state: 'RESULT',
-      file: { file },
-      filePath: { filePath },
-      boardTranscription: { boardTranscription },
-      audioTranscription: { audioTranscription }
+      file: file,
+      filePath: filePath,
+      boardTranscription: boardTranscription,
+      audioTranscription: audioTranscription
     })
   }
 
@@ -43,7 +43,8 @@ class App extends React.Component {
       mainComponent = <Result
         video={this.state.file}
         videoPath={this.state.filePath}
-        transcription={this.state.transcription}
+        boardTranscription={this.state.boardTranscription}
+        audioTranscription={this.state.audioTranscription}
         goBack={this.resetState}/>
     }
     return (
@@ -57,4 +58,3 @@ class App extends React.Component {
 }
 
 export default App
-

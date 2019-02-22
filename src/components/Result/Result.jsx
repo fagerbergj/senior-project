@@ -2,16 +2,99 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../App/App.css'
 import PropTypes from 'prop-types'
+import classNames from 'class-names'
+import TranscriptionLine from './TranscriptionLine'
 
 export default class Result extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {}
-    this.handleClick = this.handleClick.bind(this)
+    this.state = {
+      transcriptionType: 'BOARD',
+      transcription: this.props.boardTranscription,
+      hoveredText: '',
+      selectedTextIndex: null
+    }
+    this.lineClicked = this.lineClicked.bind(this)
+    this.updateSelectedText = this.updateSelectedText.bind(this)
+    this.changeTab = this.changeTab.bind(this)
   }
 
-  handleClick () {
-    this.refs.videoPlayer.currentTime = 3
+  lineClicked (index) {
+    this.setState({
+      selectedTextIndex: index
+    })
+    // todo allow this to be changed between transcriptions
+    this.refs.videoPlayer.currentTime = this.state.transcription[index][1]
+  }
+
+  // every second, check to see if the next line should be highlighted
+  updateSelectedText () {
+    var index = this.state.selectedTextIndex
+    var video = this.refs.videoPlayer
+    var transcription = this.state.transcription
+
+    // if no text is selected, assume 0 is the next text selected
+    if (index === null) index = 0
+
+    // If the current time is greater than selected line timestamp
+    if (video.currentTime > transcription[index][1]) {
+      // if last line is highlighted, not use in checking for any time greater than current selected line
+      if (transcription[index + 1] === undefined) return
+      // if current time > next line timestamp, loop until that isnt the case
+      if (video.currentTime > transcription[index + 1][1]) {
+        var i
+        for (i = index + 1; i < transcription.length; i++) {
+          // if next timestamp is greater than current time
+          if (transcription[i][1] > video.currentTime) {
+            // highlight previous line
+            this.setState({ selectedTextIndex: i - 1 })
+            return
+            // else if at end of transcriptions
+          } else if (i + 1 === transcription.length) {
+            // highlight current line (last line)
+            this.setState({ selectedTextIndex: i })
+            return
+          }
+        }
+      } else if (transcription[index][1] <= video.currentTime) {
+        this.setState({ selectedTextIndex: index })
+      }
+      // if current time is less than selected line timestamp
+    } else if (video.currentTime <= transcription[index][1]) {
+      if (video.currentTime < transcription[0][1]) {
+        this.setState({ selectedTextIndex: null })
+        return
+      }
+      for (i = index - 1; i >= 0; i--) {
+        // if transcription time is less than or equal to current time, select that line
+        if (transcription[i][1] <= video.currentTime) {
+          this.setState({ selectedTextIndex: i })
+          return
+        }
+      }
+    }
+  }
+
+  componentDidMount () {
+    this.interval = setInterval(() => this.updateSelectedText(), 500)
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.interval)
+  }
+
+  changeTab (e) {
+    if (e.target.id === 'BOARD') {
+      this.setState({
+        transcription: this.props.boardTranscription,
+        transcriptionType: e.target.id
+      })
+    } else {
+      this.setState({
+        transcription: this.props.audioTranscription,
+        transcriptionType: e.target.id
+      })
+    }
   }
 
   render () {
@@ -22,13 +105,30 @@ export default class Result extends React.Component {
           onClick={this.props.goBack}
         >Go Back To Upload</button>
         <div className={'row'}>
-          <video ref="videoPlayer" controls width="100%" height="50%">
-            <source src={this.props.videoPath.filePath}/>
+          <video ref="videoPlayer" className={'float-middle'} controls width="89%" height="50%" >
+            <source src={this.props.videoPath} />
           </video>
         </div>
-        <div className={'row half'}>
-          <div className={'div transcription'} onClick={this.handleClick}>
-            <p>transcription</p>
+        <div className={'row bottom'}>
+          <ul class="nav nav-tabs">
+            <li id='BOARD' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'BOARD' })} onClick={this.changeTab}> Board </li>
+            <li id='AUDIO' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'AUDIO' })} onClick={this.changeTab}> Audio </li>
+          </ul>
+          <div className={'div transcription'} >
+            {this.state.transcription.map(function (line, index) {
+              var selectedLine = this.state.transcription[this.state.selectedTextIndex]
+              return (
+                <React.Fragment key={line[1]}>
+                  <TranscriptionLine
+                    index={index}
+                    line={line}
+                    lineClicked={this.lineClicked}
+                    // todo make this change with current transcription
+                    selected={selectedLine !== undefined && selectedLine[0] === line[0]}
+                  />
+                </React.Fragment>
+              )
+            }, this)}
           </div>
         </div>
       </div>
@@ -39,6 +139,7 @@ export default class Result extends React.Component {
 Result.propsType = {
   video: PropTypes.object,
   videoPath: PropTypes.string,
-  transcription: PropTypes.array,
+  boardTranscription: PropTypes.array,
+  audioTranscription: PropTypes.array,
   goBack: PropTypes.func
 }
