@@ -2,6 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../App/App.css'
 import PropTypes from 'prop-types'
+import classNames from 'class-names'
 import TranscriptionLine from './TranscriptionLine'
 
 export default class Result extends React.Component {
@@ -9,11 +10,13 @@ export default class Result extends React.Component {
     super(props)
     this.state = {
       transcriptionType: 'BOARD',
+      transcription: this.props.boardTranscription,
       hoveredText: '',
       selectedTextIndex: null
     }
     this.lineClicked = this.lineClicked.bind(this)
     this.updateSelectedText = this.updateSelectedText.bind(this)
+    this.changeTab = this.changeTab.bind(this)
   }
 
   lineClicked (index) {
@@ -21,14 +24,14 @@ export default class Result extends React.Component {
       selectedTextIndex: index
     })
     // todo allow this to be changed between transcriptions
-    this.refs.videoPlayer.currentTime = this.props.boardTranscription[index][1]
+    this.refs.videoPlayer.currentTime = this.state.transcription[index][1]
   }
 
   // every second, check to see if the next line should be highlighted
   updateSelectedText () {
     var index = this.state.selectedTextIndex
     var video = this.refs.videoPlayer
-    var transcription = this.props.boardTranscription
+    var transcription = this.state.transcription
 
     // if no text is selected, assume 0 is the next text selected
     if (index === null) index = 0
@@ -80,6 +83,20 @@ export default class Result extends React.Component {
     clearInterval(this.interval)
   }
 
+  changeTab (e) {
+    if (e.target.id === 'BOARD') {
+      this.setState({
+        transcription: this.props.boardTranscription,
+        transcriptionType: e.target.id
+      })
+    } else {
+      this.setState({
+        transcription: this.props.audioTranscription,
+        transcriptionType: e.target.id
+      })
+    }
+  }
+
   render () {
     return (
       <div>
@@ -93,9 +110,13 @@ export default class Result extends React.Component {
           </video>
         </div>
         <div className={'row bottom'}>
+          <ul class="nav nav-tabs">
+            <li id='BOARD' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'BOARD' })} onClick={this.changeTab}> Board </li>
+            <li id='AUDIO' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'AUDIO' })} onClick={this.changeTab}> Audio </li>
+          </ul>
           <div className={'div transcription'} >
-            {this.props.boardTranscription.map(function (line, index) {
-              var selectedLine = this.props.boardTranscription[this.state.selectedTextIndex]
+            {this.state.transcription.map(function (line, index) {
+              var selectedLine = this.state.transcription[this.state.selectedTextIndex]
               return (
                 <React.Fragment key={line[1]}>
                   <TranscriptionLine
