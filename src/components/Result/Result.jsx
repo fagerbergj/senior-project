@@ -35,6 +35,7 @@ export default class Result extends React.Component {
 
     // if no text is selected, assume 0 is the next text selected
     if (index === null) index = 0
+    if (video.currentTime === transcription[index][1]) return
 
     // If the current time is greater than selected line timestamp
     if (video.currentTime > transcription[index][1]) {
@@ -76,7 +77,7 @@ export default class Result extends React.Component {
   }
 
   componentDidMount () {
-    this.interval = setInterval(() => this.updateSelectedText(), 500)
+    this.interval = setInterval(() => this.updateSelectedText(), 250)
   }
 
   componentWillUnmount () {
@@ -105,26 +106,25 @@ export default class Result extends React.Component {
           onClick={this.props.goBack}
         >Go Back To Upload</button>
         <div className={'row'}>
-          <video ref="videoPlayer" className={'float-middle'} controls width="89%" height="50%" >
+          <video ref="videoPlayer" className={'float-middle'} controls width="1920px" height="1080px" >
             <source src={this.props.videoPath} />
           </video>
         </div>
         <div className={'row bottom'}>
-          <ul class="nav nav-tabs">
+          <ul className="nav nav-tabs">
             <li id='BOARD' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'BOARD' })} onClick={this.changeTab}> Board </li>
             <li id='AUDIO' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'AUDIO' })} onClick={this.changeTab}> Audio </li>
           </ul>
           <div className={'div transcription'} >
             {this.state.transcription.map(function (line, index) {
-              var selectedLine = this.state.transcription[this.state.selectedTextIndex]
               return (
-                <React.Fragment key={line[1]}>
+                <React.Fragment key={index}>
                   <TranscriptionLine
                     index={index}
                     line={line}
                     lineClicked={this.lineClicked}
                     // todo make this change with current transcription
-                    selected={selectedLine !== undefined && selectedLine[0] === line[0]}
+                    selected={this.state.selectedTextIndex !== undefined && this.state.selectedTextIndex === index}
                   />
                 </React.Fragment>
               )
