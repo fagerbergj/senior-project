@@ -101,12 +101,12 @@ export default class Result extends React.Component {
   render () {
     return (
       <div>
-        <button
-          className={'btn-light btn-sm'}
-          onClick={this.props.goBack}
-        >Go Back To Upload</button>
         <div className={'row'}>
-          <video ref="videoPlayer" className={'float-middle'} controls width="1920px" height="1080px" >
+          <button
+            className={'btn-light btn-sm col-1 btn-sm'}
+            onClick={this.props.goBack}
+          >Back</button>
+          <video ref="videoPlayer" className={'col-10 col-offset-1'} controls >
             <source src={this.props.videoPath} />
           </video>
         </div>
@@ -123,7 +123,6 @@ export default class Result extends React.Component {
                     index={index}
                     line={line}
                     lineClicked={this.lineClicked}
-                    // todo make this change with current transcription
                     selected={this.state.selectedTextIndex !== undefined && this.state.selectedTextIndex === index}
                   />
                 </React.Fragment>

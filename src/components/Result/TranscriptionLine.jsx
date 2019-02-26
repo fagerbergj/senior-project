@@ -15,9 +15,15 @@ export default class TranscriptionLine extends React.Component {
   }
 
   render () {
+    var min = Math.floor(this.props.line[1] / 60)
+    var seconds = (this.props.line[1] % 60)
+    var secondsOnes = Math.floor(seconds % 10)
+    var secondsTens = Math.floor(seconds / 10 % 10)
     return (
-      <span onClick={this.handleClick} className={classNames('line', { 'selected': this.props.selected })}>
-        {this.props.line[0] + ' '}
+      <span tabIndex="0" data-toggle="tooltip" title={'Timestamp: ' + min + ':' + secondsTens.toString() + secondsOnes.toString()}>
+        <span onClick={this.handleClick} className={classNames('line', { 'selected': this.props.selected })}>
+          {this.props.line[0] + ' '}
+        </span>
       </span>)
   }
 }
