@@ -87,11 +87,13 @@ export default class Result extends React.Component {
   changeTab (e) {
     if (e.target.id === 'BOARD') {
       this.setState({
+        selectedTextIndex: null,
         transcription: this.props.boardTranscription,
         transcriptionType: e.target.id
       })
     } else {
       this.setState({
+        selectedTextIndex: null,
         transcription: this.props.audioTranscription,
         transcriptionType: e.target.id
       })
