@@ -17,6 +17,7 @@ export default class Result extends React.Component {
     this.lineClicked = this.lineClicked.bind(this)
     this.updateSelectedText = this.updateSelectedText.bind(this)
     this.changeTab = this.changeTab.bind(this)
+    this.saveResult = this.saveResult.bind(this)
   }
 
   lineClicked (index) {
@@ -101,6 +102,17 @@ export default class Result extends React.Component {
     }
   }
 
+  saveResult () {
+    var obj = { videoPath: this.props.videoPath, boardTranscription: this.props.boardTranscription, audioTranscription: this.props.boardTranscription }
+    var data = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(obj))
+
+    return (
+      <div className="container col-4 offset-4" align='center'>
+        <a className={'btn-light btn-lg text-center'} href={'data: ' + data} download="transcription_results">Download Results</a>
+      </div>
+    )
+  }
+
   render () {
     return (
       <React.Fragment>
@@ -135,8 +147,8 @@ export default class Result extends React.Component {
             </div>
           </div>
         </div>
-        <footer className={'light-pink col-12'} style={{ padding: '1%' }}>
-          <button className={'btn-light btn col-4 box'}>Save Results</button>
+        <footer className={'light-pink col-12'} style={{ padding: '2%' }}>
+          {this.saveResult()}
         </footer>
       </React.Fragment>
     )
