@@ -35,6 +35,7 @@ export default class Result extends React.Component {
 
     // if no text is selected, assume 0 is the next text selected
     if (index === null) index = 0
+    if (transcription.length === 0) transcription[0] = ['No Transcription Found', 0]
     if (video.currentTime === transcription[index][1]) return
 
     // If the current time is greater than selected line timestamp
@@ -102,37 +103,42 @@ export default class Result extends React.Component {
 
   render () {
     return (
-      <div>
-        <div className={'row'}>
-          <button
-            className={'btn-light btn-sm col-1 btn-sm'}
-            onClick={this.props.goBack}
-          >Back</button>
-          <video ref="videoPlayer" className={'col-10 col-offset-1'} controls >
-            <source src={this.props.videoPath} />
-          </video>
-        </div>
-        <div className={'row bottom'}>
-          <ul className="nav nav-tabs">
-            <li id='BOARD' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'BOARD' })} onClick={this.changeTab}> Board </li>
-            <li id='AUDIO' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'AUDIO' })} onClick={this.changeTab}> Audio </li>
-          </ul>
-          <div className={'div transcription'} >
-            {this.state.transcription.map(function (line, index) {
-              return (
-                <React.Fragment key={index}>
-                  <TranscriptionLine
-                    index={index}
-                    line={line}
-                    lineClicked={this.lineClicked}
-                    selected={this.state.selectedTextIndex !== undefined && this.state.selectedTextIndex === index}
-                  />
-                </React.Fragment>
-              )
-            }, this)}
+      <React.Fragment>
+        <div>
+          <div className={'row'}>
+            <button
+              className={'btn-light btn-sm col-1 btn-sm'}
+              onClick={this.props.goBack}
+            >Back</button>
+            <video ref="videoPlayer" className={'col-10 col-offset-1'} controls >
+              <source src={this.props.videoPath} />
+            </video>
+          </div>
+          <div className={'row bottom'}>
+            <ul className="nav nav-tabs">
+              <li id='BOARD' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'BOARD' })} onClick={this.changeTab}> Board </li>
+              <li id='AUDIO' className={classNames('nav-link', { 'active': this.state.transcriptionType === 'AUDIO' })} onClick={this.changeTab}> Audio </li>
+            </ul>
+            <div className={'div transcription'} >
+              {this.state.transcription.map(function (line, index) {
+                return (
+                  <React.Fragment key={index}>
+                    <TranscriptionLine
+                      index={index}
+                      line={line}
+                      lineClicked={this.lineClicked}
+                      selected={this.state.selectedTextIndex !== undefined && this.state.selectedTextIndex === index}
+                    />
+                  </React.Fragment>
+                )
+              }, this)}
+            </div>
           </div>
         </div>
-      </div>
+        <footer className={'light-pink col-12'} style={{ padding: '1%' }}>
+          <button className={'btn-light btn col-4 box'}>Save Results</button>
+        </footer>
+      </React.Fragment>
     )
   }
 }

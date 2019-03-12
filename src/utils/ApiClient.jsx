@@ -1,15 +1,25 @@
 import axios from 'axios'
+import FormData from 'form-data'
+
+var source
 
 // this method will process the post request to the back end and handel the response
 // callback and errorUpdate are methods that will be used to handle the results from the post
 // callback will handel a happy response
 // errorUpdate will update the components state on post error
 export function processPost (body, callback, errorUpdate) {
+  if (typeof source !== typeof undefined) {
+    source.cancel('Operation canceled due to new request.')
+  }
+
+  // save the new request for cancellation
+  source = axios.CancelToken.source()
+
   // config for post
   var config = {
     timeout: 300000,
-    headers: { 'content-type': 'multipart/form-data' }
-
+    headers: { 'content-type': 'multipart/form-data' },
+    cancelToken: source.token
   }
 
   // url for server endpoint
@@ -35,17 +45,8 @@ export function processPost (body, callback, errorUpdate) {
 }
 
 export function cancelPost () {
-  var url = 'http://localhost:5000/uploader'
-  var CancelToken = axios.CancelToken
-  var cancel
-  axios.post(url,
-    {
-      cancelToken: new CancelToken(
-        function executor (c) {
-          cancel = c
-        })
-    }
-  ).then((response) => {
-    cancel()
-  })
+  var data = new FormData()
+  data.append('file', null)
+  processPost(data, _ => {}, _ => {})
+  source = undefined
 }
