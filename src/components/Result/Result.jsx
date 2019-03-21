@@ -4,6 +4,7 @@ import '../App/App.css'
 import PropTypes from 'prop-types'
 import classNames from 'class-names'
 import TranscriptionLine from './TranscriptionLine'
+import JSZip from 'jszip'
 
 export default class Result extends React.Component {
   constructor (props) {
@@ -18,6 +19,7 @@ export default class Result extends React.Component {
     this.updateSelectedText = this.updateSelectedText.bind(this)
     this.changeTab = this.changeTab.bind(this)
     this.saveResult = this.saveResult.bind(this)
+    this.saveResult()
   }
 
   lineClicked (index) {
@@ -103,13 +105,24 @@ export default class Result extends React.Component {
   }
 
   saveResult () {
-    var obj = { videoPath: this.props.videoPath, boardTranscription: this.props.boardTranscription, audioTranscription: this.props.boardTranscription }
-    var data = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(obj))
+    var boardString = ''
+    this.props.boardTranscription.forEach(line => {
+      boardString += line[0]
+    })
 
-    return (
-      <div className="container col-4 offset-4" align='center'>
-        <a className={'btn-light btn-lg text-center'} href={'data: ' + data} download="transcription_results">Download Results</a>
-      </div>
+    var audioString = ''
+
+    this.props.audioTranscription.forEach(line => {
+      audioString += line[0]
+    })
+
+    var zip = new JSZip()
+    zip.file('board_transcription_results.txt', boardString)
+    zip.file('audio_transcription_result.txt', audioString)
+    zip.generateAsync({ type: 'blob' }).then(content => {
+      var href = URL.createObjectURL(content)
+      this.setState({ href: href })
+    }, this
     )
   }
 
@@ -148,7 +161,9 @@ export default class Result extends React.Component {
           </div>
         </div>
         <footer className={'light-pink col-12'} style={{ padding: '2%' }}>
-          {this.saveResult()}
+          <div className="container col-4 offset-4" align='center'>
+            <a className={'btn-light btn-lg text-center'} href={this.state.href} download="results">Download Results</a>
+          </div>
         </footer>
       </React.Fragment>
     )

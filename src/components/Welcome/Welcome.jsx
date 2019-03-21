@@ -14,11 +14,14 @@ export default class Welcome extends React.Component {
       selectedFile: null
     }
     this.handleClick = this.handleClick.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.post = this.post.bind(this)
   }
 
-  handleClick () {
-    if (this.state.state === 'PENDING') {
+  handleClick (event) {
+    if (event.target.id === 'previousResult') {
+      this.refs.previousResult.click()
+    } else if (this.state.state === 'PENDING') {
       this.refs.fileUploader.click()
     } else {
       cancelPost()
@@ -26,7 +29,8 @@ export default class Welcome extends React.Component {
     }
   }
 
-  handleChange (selectorFiles) {
+  handleChange (event) {
+    var selectorFiles = event.target.files
     if (selectorFiles.length === 0) return
     console.log(selectorFiles)
     this.post(selectorFiles[0])
@@ -79,13 +83,15 @@ export default class Welcome extends React.Component {
       input = (
         <React.Fragment>
           <br></br>
-          <button
-            className={'btn-light btn-lg'}
-            onClick={this.handleClick}
-          >Upload Video</button>
-          <input id="file" ref="fileUploader" type="file" accept='video/*'
-            style={{ display: 'none' }}
-            onChange={ (e) => this.handleChange(e.target.files) } />
+          <div className="container" align='center'>
+            <button
+              className={'btn-light btn-lg'}
+              onClick={this.handleClick}
+            >Upload Video</button>
+            <input id="file" ref="fileUploader" type="file" accept='video/*'
+              style={{ display: 'none' }}
+              onChange={this.handleChange} />
+          </div>
         </React.Fragment>
       )
       loading = null
@@ -96,7 +102,6 @@ export default class Welcome extends React.Component {
           <h2 className={'h2 font-size:10vw'}>Welcome to AutoNote!</h2>
           <h6 className={'h6 font-size:5vw'}>Upload a video to generate a linked transcription.</h6>
           {input}
-          <br></br>
           {loading}
         </div>
       </div>)
