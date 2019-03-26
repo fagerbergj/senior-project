@@ -11,7 +11,8 @@ export default class Welcome extends React.Component {
     super(props)
     this.state = {
       state: 'PENDING',
-      selectedFile: null
+      selectedFile: null,
+      error: null
     }
     this.handleClick = this.handleClick.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -56,7 +57,10 @@ export default class Welcome extends React.Component {
       error => {
         // if there is an error, log it and reset state
         console.log(error)
-        this.setState({ state: 'PENDING' })
+        this.setState({
+          state: 'PENDING',
+          error: error
+        })
       })
   }
 
@@ -101,6 +105,7 @@ export default class Welcome extends React.Component {
         <div className={jumboClass}>
           <h2 className={'h2 font-size:10vw'}>Welcome to AutoNote!</h2>
           <h6 className={'h6 font-size:5vw'}>Upload a video to generate a linked transcription.</h6>
+          <span style={{ color: '#ff0033', fontSize: 'large' }}>{this.state.error}</span>
           {input}
           {loading}
         </div>

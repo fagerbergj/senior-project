@@ -17,7 +17,7 @@ export function processPost (body, callback, errorUpdate) {
 
   // config for post
   var config = {
-    timeout: 300000,
+    timeout: 30000000,
     headers: { 'content-type': 'multipart/form-data' },
     cancelToken: source.token
   }
